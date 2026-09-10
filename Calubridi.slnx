@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="backend/Calubridi.Api/Calubridi.Api.csproj" />
+  </Folder>
+</Solution>
