@@ -1,6 +1,39 @@
-@Calubridi.Api_HostAddress = http://localhost:5228
+@Calubridi_Api_HostAddress = http://localhost:5228
 
-GET {{Calubridi.Api_HostAddress}}/weatherforecast/
+### Obtener todos los productos
+GET {{Calubridi_Api_HostAddress}}/api/products
 Accept: application/json
 
 ###
+
+### Obtener producto por ID
+GET {{Calubridi_Api_HostAddress}}/api/products/1
+Accept: application/json
+
+###
+
+### Crear producto
+POST {{Calubridi_Api_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+  "name": "Kit desmaquillante",
+  "description": "Kit de belleza a medida",
+  "price": 8000,
+  "estimatedProductionDays": 1
+}
+
+### Actualizar producto
+PUT {{Calubridi_Api_HostAddress}}/api/products/2
+Content-Type: application/json
+
+{
+  "name": "Kit desmaquillante",
+  "description": "Producto Estrella",
+  "price": 20000,
+  "estimatedProductionDays": 7,
+  "isActive": true
+}
+
+### Eliminar producto
+DELETE {{Calubridi_Api_HostAddress}}/api/products/3

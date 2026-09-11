@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // Configuración de Entity Framework Core con PostgreSQL
@@ -38,4 +39,5 @@ app.MapGet("/api/database/test", async (ApplicationDbContext db) =>
     });
 });
 
+app.MapControllers();
 app.Run();
