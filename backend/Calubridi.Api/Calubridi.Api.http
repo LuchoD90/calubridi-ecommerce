@@ -7,24 +7,52 @@ Accept: application/json
 ###
 
 ### Obtener producto por ID
-GET {{Calubridi_Api_HostAddress}}/api/products/1
+GET {{Calubridi_Api_HostAddress}}/api/products/6
 Accept: application/json
 
 ###
 
-### Crear producto
+### Crear producto sin categoría
 POST {{Calubridi_Api_HostAddress}}/api/products
 Content-Type: application/json
 
 {
-  "name": "Kit desmaquillante",
-  "description": "Kit de belleza a medida",
+  "name": "Bolso Roma",
+  "description": "Bolso confeccionado a pedido",
   "price": 8000,
-  "estimatedProductionDays": 1
+  "estimatedProductionDays": 5
+}
+
+###
+
+### Crear producto con categoría
+POST {{Calubridi_Api_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+  "name": "Vestido Primavera",
+  "description": "Vestido confeccionado a pedido",
+  "price": 45000,
+  "estimatedProductionDays": 7,
+  "categoryId": 3
+}
+
+###
+
+### Intentar crear producto con categoría inexistente
+POST {{Calubridi_Api_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+  "name": "Producto de prueba",
+  "description": "Este producto no debería crearse",
+  "price": 10000,
+  "estimatedProductionDays": 3,
+  "categoryId": 99999
 }
 
 ### Actualizar producto
-PUT {{Calubridi_Api_HostAddress}}/api/products/2
+PUT {{Calubridi_Api_HostAddress}}/api/products/6
 Content-Type: application/json
 
 {
@@ -35,5 +63,58 @@ Content-Type: application/json
   "isActive": true
 }
 
+###
+
+### Actualizar producto y cambiar categoría
+PUT {{Calubridi_Api_HostAddress}}/api/products/6
+Content-Type: application/json
+
+{
+  "name": "Bolso Roma Premium",
+  "description": "Bolso confeccionado a pedido - versión premium",
+  "price": 35000,
+  "estimatedProductionDays": 6,
+  "isActive": true,
+  "categoryId": 3
+}
+
 ### Eliminar producto
-DELETE {{Calubridi_Api_HostAddress}}/api/products/3
+DELETE {{Calubridi_Api_HostAddress}}/api/products/6
+
+
+### Crear categoría
+POST {{Calubridi_Api_HostAddress}}/api/categories
+Content-Type: application/json
+
+{
+  "name": "Vestidos",
+  "isActive": true
+}
+
+###
+
+### Obtener todas las categorías
+GET {{Calubridi_Api_HostAddress}}/api/categories
+Accept: application/json
+
+###
+
+### Obtener categoría por ID
+GET {{Calubridi_Api_HostAddress}}/api/categories/1
+Accept: application/json
+
+###
+
+### Actualizar categoría
+PUT {{Calubridi_Api_HostAddress}}/api/categories/1
+Content-Type: application/json
+
+{
+  "name": "Vestidos y Conjuntos",
+  "isActive": true
+}
+
+###
+
+### Eliminar categoría
+DELETE {{Calubridi_Api_HostAddress}}/api/categories/3

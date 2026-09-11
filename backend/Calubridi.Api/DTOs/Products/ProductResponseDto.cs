@@ -1,6 +1,6 @@
-namespace Calubridi.Api.Models;
+namespace Calubridi.Api.DTOs.Products;
 
-public class Product
+public class ProductResponseDto
 {
     public int Id { get; set; }
 
@@ -12,13 +12,13 @@ public class Product
 
     public int EstimatedProductionDays { get; set; }
 
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
     public int CategoryId { get; set; }
 
-    public Category? Category { get; set; }
+    public string CategoryName { get; set; } = string.Empty;
 }
