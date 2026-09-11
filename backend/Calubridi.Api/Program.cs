@@ -39,5 +39,6 @@ app.MapGet("/api/database/test", async (ApplicationDbContext db) =>
     });
 });
 
+app.UseStaticFiles();
 app.MapControllers();
 app.Run();

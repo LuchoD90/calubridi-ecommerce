@@ -21,4 +21,7 @@ public class Product
     public int CategoryId { get; set; }
 
     public Category? Category { get; set; }
+
+    public ICollection<ProductMedia> Media { get; set; }
+    = new List<ProductMedia>();
 }

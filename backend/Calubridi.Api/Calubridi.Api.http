@@ -82,6 +82,87 @@ Content-Type: application/json
 DELETE {{Calubridi_Api_HostAddress}}/api/products/6
 
 
+
+
+
+########
+
+
+
+
+
+### Subir imagen principal al producto 7
+POST {{Calubridi_Api_HostAddress}}/api/products/7/media?isPrimary=true&displayOrder=1
+Content-Type: multipart/form-data; boundary=CalubridiBoundary
+
+--CalubridiBoundary
+Content-Disposition: form-data; name="file"; filename="producto-prueba.jpg"
+Content-Type: image/jpeg
+
+< ./test-files/producto-prueba.jpg
+--CalubridiBoundary--
+
+
+### Eliminar imagen del producto 7
+DELETE {{Calubridi_Api_HostAddress}}/api/products/7/media/2
+
+
+###
+
+### Subir imagen 1 - PRINCIPAL
+POST {{Calubridi_Api_HostAddress}}/api/products/7/media?isPrimary=true&displayOrder=1
+Content-Type: multipart/form-data; boundary=CalubridiBoundary
+
+--CalubridiBoundary
+Content-Disposition: form-data; name="file"; filename="producto-prueba.jpg"
+Content-Type: image/jpeg
+
+< ./test-files/producto-prueba.jpg
+--CalubridiBoundary--
+
+###
+
+### Subir imagen 2 - SECUNDARIA
+POST {{Calubridi_Api_HostAddress}}/api/products/7/media?isPrimary=false&displayOrder=2
+Content-Type: multipart/form-data; boundary=CalubridiBoundary
+
+--CalubridiBoundary
+Content-Disposition: form-data; name="file"; filename="Prueba2.jpg"
+Content-Type: image/jpeg
+
+< ./test-files/Prueba2.jpg
+--CalubridiBoundary--
+
+###
+
+### Subir imagen 3 - SECUNDARIA
+POST {{Calubridi_Api_HostAddress}}/api/products/7/media?isPrimary=false&displayOrder=3
+Content-Type: multipart/form-data; boundary=CalubridiBoundary
+
+--CalubridiBoundary
+Content-Disposition: form-data; name="file"; filename="Prueba3.jpg"
+Content-Type: image/jpeg
+
+< ./test-files/Prueba3.jpg
+--CalubridiBoundary--
+
+
+### Eliminar imagen principal
+DELETE {{Calubridi_Api_HostAddress}}/api/products/7/media/3
+
+
+
+
+#################
+
+
+
+
+
+
+
+
+
 ### Crear categoría
 POST {{Calubridi_Api_HostAddress}}/api/categories
 Content-Type: application/json
@@ -91,7 +172,6 @@ Content-Type: application/json
   "isActive": true
 }
 
-###
 
 ### Obtener todas las categorías
 GET {{Calubridi_Api_HostAddress}}/api/categories
