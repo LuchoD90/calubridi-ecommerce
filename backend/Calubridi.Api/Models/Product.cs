@@ -24,4 +24,7 @@ public class Product
 
     public ICollection<ProductMedia> Media { get; set; }
     = new List<ProductMedia>();
+
+    public ICollection<ProductFabric> Fabrics { get; set; }
+    = new List<ProductFabric>();
 }

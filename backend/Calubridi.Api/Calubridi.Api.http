@@ -150,6 +150,93 @@ Content-Type: image/jpeg
 ### Eliminar imagen principal
 DELETE {{Calubridi_Api_HostAddress}}/api/products/7/media/3
 
+###
+
+### Convertir imagen 5 en principal
+PUT {{Calubridi_Api_HostAddress}}/api/products/7/media/5/primary
+
+###
+
+### Eliminar imagen principal
+DELETE {{Calubridi_Api_HostAddress}}/api/products/7/media/5
+
+
+
+
+
+
+################################################3
+
+
+
+
+
+
+
+
+### Crear tela - Lino
+POST {{Calubridi_Api_HostAddress}}/api/fabrics
+Content-Type: application/json
+
+{
+  "name": "Lino",
+  "isActive": true
+}
+
+###
+
+### Crear tela - Seda
+POST {{Calubridi_Api_HostAddress}}/api/fabrics
+Content-Type: application/json
+
+{
+  "name": "Seda",
+  "isActive": true
+}
+
+###
+
+### Crear tela - Crepé
+POST {{Calubridi_Api_HostAddress}}/api/fabrics
+Content-Type: application/json
+
+{
+  "name": "Crepé",
+  "isActive": true
+}
+
+###
+
+### Obtener todas las telas
+GET {{Calubridi_Api_HostAddress}}/api/fabrics
+Accept: application/json
+
+###
+
+### Obtener tela por ID
+GET {{Calubridi_Api_HostAddress}}/api/fabrics/1
+Accept: application/json
+
+
+###
+
+### Eliminar tela duplicada
+DELETE {{Calubridi_Api_HostAddress}}/api/fabrics/3
+
+
+###
+
+### Actualizar tela
+PUT {{Calubridi_Api_HostAddress}}/api/fabrics/5
+Content-Type: application/json
+
+{
+  "name": "Crepé",
+  "isActive": true
+}
+
+
+
 
 
 
@@ -198,3 +285,318 @@ Content-Type: application/json
 
 ### Eliminar categoría
 DELETE {{Calubridi_Api_HostAddress}}/api/categories/3
+
+
+
+
+
+##########################################
+
+
+
+### Crear color - Rojo
+POST {{Calubridi_Api_HostAddress}}/api/colors
+Content-Type: application/json
+
+{
+  "name": "Rojo",
+  "hexCode": "#FF0000",
+  "isActive": true
+}
+
+###
+
+### Crear color - Negro
+POST {{Calubridi_Api_HostAddress}}/api/colors
+Content-Type: application/json
+
+{
+  "name": "Negro",
+  "hexCode": "#000000",
+  "isActive": true
+}
+
+###
+
+### Crear color - Blanco
+POST {{Calubridi_Api_HostAddress}}/api/colors
+Content-Type: application/json
+
+{
+  "name": "Blanco",
+  "hexCode": "#FFFFFF",
+  "isActive": true
+}
+
+###
+
+### Crear color - Beige
+POST {{Calubridi_Api_HostAddress}}/api/colors
+Content-Type: application/json
+
+{
+  "name": "Beige",
+  "hexCode": "#F5F5DC",
+  "isActive": true
+}
+
+###
+
+### Obtener todos los colores
+GET {{Calubridi_Api_HostAddress}}/api/colors
+Accept: application/json
+
+
+############################################
+### TELAS DEL PRODUCTO
+############################################
+
+### Asociar Lino al producto 7 - DEFAULT
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics
+Content-Type: application/json
+
+{
+  "fabricId": 1,
+  "price": 45000,
+  "isDefault": true,
+  "isActive": true
+}
+
+###
+
+### Asociar Seda al producto 7
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics
+Content-Type: application/json
+
+{
+  "fabricId": 2,
+  "price": 52000,
+  "isDefault": false,
+  "isActive": true
+}
+
+###
+
+### Asociar Crepé al producto 7
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics
+Content-Type: application/json
+
+{
+  "fabricId": 5,
+  "price": 48000,
+  "isDefault": false,
+  "isActive": true
+}
+
+###
+
+### Obtener telas disponibles del producto 7
+GET {{Calubridi_Api_HostAddress}}/api/products/7/fabrics
+Accept: application/json
+
+
+
+
+
+#############################
+
+
+
+
+
+########################################
+### COLORES DE LAS TELAS DEL PRODUCTO
+########################################
+
+### Lino - agregar Blanco como DEFAULT
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/1/colors
+Content-Type: application/json
+
+{
+  "colorId": 1,
+  "isDefault": true,
+  "isActive": true
+}
+
+###
+
+### Lino - agregar Rojo
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/1/colors
+Content-Type: application/json
+
+{
+  "colorId": 2,
+  "isDefault": false,
+  "isActive": true
+}
+
+###
+
+### Lino - agregar Beige
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/1/colors
+Content-Type: application/json
+
+{
+  "colorId": 3,
+  "isDefault": true,
+  "isActive": true
+}
+
+###
+
+### Obtener colores disponibles de Lino
+GET {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/1/colors
+Accept: application/json
+
+
+
+###########################################
+
+
+
+########################################
+### COLORES DE SEDA
+########################################
+
+### Seda - Negro DEFAULT
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors
+Content-Type: application/json
+
+{
+  "colorId": 3,
+  "isDefault": true,
+  "isActive": true
+}
+
+###
+
+### Seda - Blanco
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors
+Content-Type: application/json
+
+{
+  "colorId": 1,
+  "isDefault": false,
+  "isActive": true
+}
+
+###
+
+### Obtener colores de Seda
+GET {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors
+Accept: application/json
+
+
+########################################
+### COLORES DE CREPÉ
+########################################
+
+### Crepé - Rojo DEFAULT
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/3/colors
+Content-Type: application/json
+
+{
+  "colorId": 2,
+  "isDefault": true,
+  "isActive": true
+}
+
+###
+
+### Crepé - Negro
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/3/colors
+Content-Type: application/json
+
+{
+  "colorId": 3,
+  "isDefault": false,
+  "isActive": true
+}
+
+###
+
+### Obtener colores de Crepé
+GET {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/3/colors
+Accept: application/json
+
+
+### Cambiar Blanco a color DEFAULT de Seda
+PUT {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors/6
+Content-Type: application/json
+
+{
+  "isDefault": true,
+  "isActive": true
+}
+
+
+### Verificar colores de Seda
+GET {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors
+Accept: application/json
+
+
+### Eliminar Blanco DEFAULT de Seda
+DELETE {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors/6
+
+
+### Verificar Seda después de eliminar el default
+GET {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors
+Accept: application/json
+
+
+
+########################
+
+### PRUEBA REGLA - intentar quitar DEFAULT al único color de Seda
+PUT {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors/5
+Content-Type: application/json
+
+{
+  "isDefault": false,
+  "isActive": true
+}
+
+### Verificar Seda después del 409
+GET {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors
+Accept: application/json
+
+
+###
+
+### PRUEBA REGLA - agregar Rojo a Seda
+POST {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors
+Content-Type: application/json
+
+{
+  "colorId": 2,
+  "isDefault": false,
+  "isActive": true
+}
+
+###
+
+### PRUEBA REGLA - quitar DEFAULT a Negro de Seda
+PUT {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors/5
+Content-Type: application/json
+
+{
+  "isDefault": false,
+  "isActive": true
+}
+
+###
+
+### Verificar reasignación automática del DEFAULT de Seda
+GET {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors
+Accept: application/json
+
+###
+
+### PRUEBA REGLA - DEFAULT no puede estar inactivo
+PUT {{Calubridi_Api_HostAddress}}/api/products/7/fabrics/2/colors/9
+Content-Type: application/json
+
+{
+  "isDefault": true,
+  "isActive": false
+}
