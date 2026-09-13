@@ -600,3 +600,33 @@ Content-Type: application/json
   "isDefault": true,
   "isActive": false
 }
+
+###
+
+### Eliminar multimedia antigua de prueba
+DELETE {{Calubridi_Api_HostAddress}}/api/products/7/media/4
+
+
+
+
+
+
+############################################
+### VIDEOS DEL PRODUCTO
+############################################
+
+### Subir video al producto 7
+POST {{Calubridi_Api_HostAddress}}/api/products/7/videos
+Content-Type: multipart/form-data; boundary=CalubridiBoundary
+
+--CalubridiBoundary
+Content-Disposition: form-data; name="file"; filename="video-prueba.mp4"
+Content-Type: video/mp4
+
+< ./test-files/video-prueba.mp4
+--CalubridiBoundary
+Content-Disposition: form-data; name="displayOrder"
+
+1
+--CalubridiBoundary--
+

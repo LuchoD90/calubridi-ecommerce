@@ -4,7 +4,7 @@ public class ProductMedia
 {
     public int Id { get; set; }
 
-    public int ProductId { get; set; }
+    public int ProductFabricColorId { get; set; }
 
     public string Url { get; set; } = string.Empty;
 
@@ -16,5 +16,5 @@ public class ProductMedia
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public Product? Product { get; set; }
+    public ProductFabricColor? ProductFabricColor { get; set; }
 }

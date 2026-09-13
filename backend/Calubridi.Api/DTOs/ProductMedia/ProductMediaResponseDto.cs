@@ -4,7 +4,7 @@ public class ProductMediaResponseDto
 {
     public int Id { get; set; }
 
-    public int ProductId { get; set; }
+    public int ProductFabricColorId { get; set; }
 
     public string Url { get; set; } = string.Empty;
 

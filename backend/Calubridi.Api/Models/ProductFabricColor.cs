@@ -10,9 +10,12 @@ public class ProductFabricColor
 
     public bool IsDefault { get; set; }
 
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
 
     public ProductFabric? ProductFabric { get; set; }
 
     public Color? Color { get; set; }
+
+    public ICollection<ProductMedia> Media { get; set; }
+        = new List<ProductMedia>();
 }

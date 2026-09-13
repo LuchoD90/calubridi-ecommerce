@@ -25,9 +25,15 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<ProductFabricColor> ProductFabricColors { get; set; }
 
+    public DbSet<ProductVideo> ProductVideos { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // =========================================================
+        // PRODUCT -> CATEGORY
+        // =========================================================
 
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Category)
@@ -35,11 +41,9 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<ProductMedia>()
-            .HasOne(pm => pm.Product)
-            .WithMany(p => p.Media)
-            .HasForeignKey(pm => pm.ProductId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // =========================================================
+        // PRODUCT -> PRODUCT FABRICS
+        // =========================================================
 
         modelBuilder.Entity<ProductFabric>()
             .HasOne(pf => pf.Product)
@@ -47,11 +51,19 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(pf => pf.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // =========================================================
+        // PRODUCT FABRIC -> FABRIC
+        // =========================================================
+
         modelBuilder.Entity<ProductFabric>()
             .HasOne(pf => pf.Fabric)
             .WithMany(f => f.ProductFabrics)
             .HasForeignKey(pf => pf.FabricId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // =========================================================
+        // PRODUCT FABRIC -> PRODUCT FABRIC COLORS
+        // =========================================================
 
         modelBuilder.Entity<ProductFabricColor>()
             .HasOne(pfc => pfc.ProductFabric)
@@ -59,15 +71,37 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(pfc => pfc.ProductFabricId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // =========================================================
+        // PRODUCT FABRIC COLOR -> COLOR
+        // =========================================================
+
         modelBuilder.Entity<ProductFabricColor>()
             .HasOne(pfc => pfc.Color)
             .WithMany(c => c.ProductFabricColors)
             .HasForeignKey(pfc => pfc.ColorId)
             .OnDelete(DeleteBehavior.Restrict);
 
-            // Un producto no puede tener la misma tela dos veces
+        // =========================================================
+        // PRODUCT FABRIC COLOR -> PRODUCT MEDIA
+        // =========================================================
+
+        modelBuilder.Entity<ProductMedia>()
+            .HasOne(pm => pm.ProductFabricColor)
+            .WithMany(pfc => pfc.Media)
+            .HasForeignKey(pm => pm.ProductFabricColorId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // =========================================================
+        // REGLAS / ÍNDICES ÚNICOS
+        // =========================================================
+
+        // Un producto no puede tener la misma tela dos veces
         modelBuilder.Entity<ProductFabric>()
-            .HasIndex(pf => new { pf.ProductId, pf.FabricId })
+            .HasIndex(pf => new
+            {
+                pf.ProductId,
+                pf.FabricId
+            })
             .IsUnique();
 
         // Solo una tela puede ser default por producto
@@ -90,5 +124,11 @@ public class ApplicationDbContext : DbContext
             .HasIndex(pfc => pfc.ProductFabricId)
             .IsUnique()
             .HasFilter("\"IsDefault\" = true");
+
+         modelBuilder.Entity<ProductVideo>()
+            .HasOne(pv => pv.Product)
+            .WithMany(p => p.Videos)
+            .HasForeignKey(pv => pv.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -21,10 +21,10 @@ public class Product
     public int CategoryId { get; set; }
 
     public Category? Category { get; set; }
-
-    public ICollection<ProductMedia> Media { get; set; }
-    = new List<ProductMedia>();
-
+    
     public ICollection<ProductFabric> Fabrics { get; set; }
     = new List<ProductFabric>();
+
+    public ICollection<ProductVideo> Videos { get; set; }
+    = new List<ProductVideo>();
 }
