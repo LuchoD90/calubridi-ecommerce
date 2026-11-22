@@ -70,6 +70,12 @@ if (googleEnabled)
         options.ClientSecret = googleSecret!;
         options.SignInScheme = IdentityConstants.ExternalScheme;
         options.ClaimActions.MapJsonKey("google_email_verified", "verified_email");
+        options.Events.OnRemoteFailure = context =>
+        {
+            context.HandleResponse();
+            context.Response.Redirect("/?auth=google-error#cuenta");
+            return Task.CompletedTask;
+        };
     });
 }
 builder.Services.AddAntiforgery(options =>
@@ -134,13 +140,18 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapGet("/healthz", () => Results.Ok());
-app.MapGet("/api/account/session", (HttpContext context, IAntiforgery antiforgery) =>
-    Results.Ok(new
+app.MapGet("/api/account/session", async (HttpContext context, IAntiforgery antiforgery, UserManager<StoreUser> users) =>
+{
+    var signedIn = context.User.Identity?.IsAuthenticated == true;
+    var user = signedIn && googleEnabled ? await users.GetUserAsync(context.User) : null;
+    return Results.Ok(new
     {
         user = context.User.Identity?.IsAuthenticated == true ? context.User.Identity.Name : null,
         admin = context.User.IsInRole("Admin"),
         google = googleEnabled,
+        googleLinked = user is not null && (await users.GetLoginsAsync(user)).Any(login => login.LoginProvider == "Google"),
         demo = app.Configuration.GetValue<bool>("Store:SeedDemo"),
         csrf = antiforgery.GetAndStoreTokens(context).RequestToken
-    }));
+    });
+});
 app.Run();

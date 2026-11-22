@@ -1,0 +1,19 @@
+{
+  "name": "calubridi-account",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "esbuild src/panels.tsx --bundle --minify --format=esm --target=es2022 --outfile=../backend/Calubridi.Api/wwwroot/assets/panels.js"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.9.0"
+  }
+}

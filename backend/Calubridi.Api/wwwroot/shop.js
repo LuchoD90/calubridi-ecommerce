@@ -1,3 +1,4 @@
+import { mountAccount, unmountPanels } from './assets/panels.js';
 import { api, date, errorField, esc, icon, media, money, onSubmit, options, receipt, refreshSession, session, toast } from './ui.js';
 import { renderAdmin } from './admin.js';
 
@@ -221,29 +222,34 @@ function showCart() {
   });
 }
 
+const accessNotices = {
+  'email-exists': 'Ese correo ya tiene una cuenta. Ingresá con tu contraseña y vinculá Google desde Mi cuenta.',
+  'google-error': 'No pudimos completar el acceso con Google. Volvé a intentar.',
+  'google-linked': 'Google está vinculado. La próxima vez podés ingresar con ese Gmail.',
+  'link-password': 'La contraseña del sitio no se pudo validar. Revisala o esperá unos minutos si hiciste varios intentos.',
+  'link-used': 'Ese Gmail está asociado a otra cuenta de Calubridi. Elegí otro Gmail.',
+  'link-error': 'No pudimos vincular Google. Iniciá el vínculo nuevamente desde Mi cuenta.'
+};
+
 async function showAccount(version) {
+  const result = new URLSearchParams(location.search).get('auth');
+  const notice = accessNotices[result] || '';
+  if (result) history.replaceState({}, '', '/#cuenta');
   if (!session.user) {
-    const failure = new URLSearchParams(location.search).get('auth');
-    if (failure) history.replaceState({}, '', '/#cuenta');
-    view.innerHTML = `<h2>Mi cuenta</h2>${failure ? `<p class="auth-error">${failure === 'email-exists' ?
-      'Ese correo ya tiene una cuenta. Ingresá con tu usuario y contraseña.' : 'No pudimos iniciar sesión con Google.'}</p>` : ''}
-      <div class="two-columns"><div class="panel"><h3>Ingresá</h3>
-      <form class="form" id="login"><label>Usuario o correo<input name="login" required maxlength="254" autocomplete="username"></label>
-      <label>Contraseña<input name="password" type="password" required maxlength="128" autocomplete="current-password"></label>
-      <button class="button" type="submit">Iniciar sesión</button>${errorField}</form>
-      ${session.google ? '<a class="button secondary" href="/api/account/google">Continuar con Google</a>' : ''}
-      </div><div class="panel"><h3>Creá tu cuenta</h3>
-      <form class="form" id="register"><label>Correo<input name="email" type="email" required maxlength="254" autocomplete="email"></label>
-      <label>Usuario<input name="username" required minlength="3" maxlength="32" pattern="[A-Za-z0-9_.\\-]+" autocomplete="username"></label>
-      <label>Contraseña <span class="muted">12 caracteres, mayúscula, minúscula y número.</span><input name="password" type="password" required minlength="12" maxlength="128" autocomplete="new-password"></label>
-      <button class="button" type="submit">Crear cuenta</button>${errorField}</form></div></div>`;
-    for (const action of ['login', 'register']) onSubmit(view.querySelector('#' + action), async data => {
-      await api('/api/account/' + action, { method: 'POST', body: Object.fromEntries(data) });
-      await refreshSession(); await syncFavorites(); renderCatalog();
-      const target = returnAfterLogin;
-      returnAfterLogin = '';
-      if (target && target !== location.hash) location.hash = target;
-      else await route();
+    const account = document.createElement('div');
+    view.replaceChildren(account);
+    mountAccount(account, {
+      google: session.google,
+      notice,
+      submit: async (mode, data) => {
+        await api('/api/account/' + mode, { method: 'POST', body: data });
+        await refreshSession(); await syncFavorites(); renderCatalog();
+        const target = returnAfterLogin;
+        returnAfterLogin = '';
+        if (target && target !== location.hash) location.hash = target;
+        else if (session.admin) location.hash = 'admin';
+        else await route();
+      }
     });
     return;
   }
@@ -252,6 +258,14 @@ async function showAccount(version) {
   view.innerHTML = `<div class="section-title"><div><h2>Mis pedidos</h2><p class="muted">Consultá tus encargos y el avance de confección.</p></div>
     <div class="row">${session.admin ? '<a class="button" href="#admin">Panel del taller</a>' : ''}
     <button class="button secondary" id="logout">Cerrar sesión</button></div></div>
+    ${notice ? `<p class="access-notice" role="status">${esc(notice)}</p>` : ''}
+    ${session.google && !session.googleLinked ? `<details class="receipt account-link"><summary>Vincular Google</summary>
+      <p>Confirmá tu contraseña de Calubridi y elegí tu Gmail. El acceso al panel y a tus pedidos se conserva.</p>
+      <form class="form" method="post" action="/api/account/google-link">
+        <input type="hidden" name="__RequestVerificationToken" value="${esc(session.csrf)}">
+        <label>Contraseña de Calubridi<input type="password" name="password" required maxlength="128" autocomplete="current-password"></label>
+        <button class="button secondary" type="submit">Continuar con Google</button>
+      </form></details>` : ''}
     <div class="stack">${orders.length ? orders.map(o => receipt(o)).join('') : '<p class="empty">Todavía no tenés pedidos.</p>'}</div>`;
   view.querySelector('#logout').onclick = async () => {
     try {
@@ -263,6 +277,7 @@ async function showAccount(version) {
 
 async function route() {
   const version = ++routeVersion;
+  unmountPanels();
   const routeName = location.hash.slice(1);
   const isHome = homeRoutes.has(routeName);
   home.hidden = !isHome;

@@ -5,3 +5,6 @@
 **/test-files
 *.user
 .env*
+
+**/node_modules
+**/wwwroot/assets/panels.js

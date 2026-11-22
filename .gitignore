@@ -483,3 +483,6 @@ $RECYCLE.BIN/
 
 # Archivos cargados desde la tienda
 /backend/Calubridi.Api/wwwroot/uploads/
+
+/frontend/node_modules/
+/backend/Calubridi.Api/wwwroot/assets/panels.js

@@ -50,3 +50,9 @@ La sección **Arreglos** y el botón de WhatsApp abren el número comercial publ
 El archivo `render.yaml` permite crear una instalación de prueba con Docker y PostgreSQL en Render. Vinculá el repositorio y la rama del PR, y cargá correo y contraseña del administrador mediante el formulario de secretos de Render. La base gratuita vence y las fotos subidas al disco del contenedor se pierden al reiniciar. Usá datos ficticios durante las pruebas.
 
 La portada utiliza una imagen ilustrativa generada de una máquina Godeco en uso. Las fotos del catálogo de demostración provienen de las referencias de Calubridi.
+
+## Interfaz de cuenta y taller
+
+Para desarrollo, desde la raíz ejecutá `npm ci --prefix frontend` y luego `npm run check --prefix frontend` y `npm run build --prefix frontend`. Docker compila estos componentes de React y TypeScript automáticamente.
+
+En pedidos de prueba, la URL autorizada de retorno de Google es `https://calubridi-tienda-pruebas.onrender.com/signin-google`. La persona que administra el taller debe entrar una vez con su contraseña y abrir **Mi cuenta → Vincular Google** antes de usar su Gmail para entrar al panel. Vincular exige confirmar la contraseña y conserva los permisos de la cuenta ya autenticada.

@@ -1,3 +1,4 @@
+import { mountWorkshop } from './assets/panels.js';
 import { api, date, esc, errorField, money, onSubmit, options, receipt, statuses, toast } from './ui.js';
 
 const base = '/api/products';
@@ -17,10 +18,7 @@ async function loadDashboard(view, context, params = {}) {
   view.innerHTML = `${adminNav}<div class="stack admin-section">
     <form class="row" id="period"><label>Desde<input type="date" name="from" required value="${data.from}"></label>
       <label>Hasta<input type="date" name="to" required value="${data.to}"></label>${button('Filtrar')}${errorField}</form>
-    <div class="kpis"><div class="panel">Pedidos del período<strong>${data.orderCount}</strong></div>
-    <div class="panel">Ventas cobradas<strong>${totalLabel(data.income)}</strong></div>
-    <div class="panel">Compras de insumos<strong>${totalLabel(data.spent)}</strong></div></div>
-    <div class="pills">${data.statuses.map(s => `<span class="tag">${esc(statuses[s.status])} · ${s.count}</span>`).join('')}</div>
+    <div id="workshop-overview"></div>
     <h3>Pedidos</h3><div class="stack">${data.orders.length ? data.orders.map(({ receipt: o, email, revision }) =>
       receipt(o, `<p><strong>Contacto:</strong> ${esc(o.customer)} · ${esc(email)} · ${esc(o.phone)}</p>
       <form class="form order-form" data-id="${o.id}" data-revision="${revision}">
@@ -38,6 +36,13 @@ async function loadDashboard(view, context, params = {}) {
       ${data.purchases.length ? `<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Proveedor y detalle</th><th>Importe</th></tr></thead>
       <tbody>${data.purchases.map(p => `<tr><td>${p.date}</td><td>${esc(p.supplier)}<br>${esc(p.description)}</td><td>${money(p.total, p.currency)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="muted">No hay compras en este período.</p>'}</div></div>
     </div>`;
+  const stages = ['pending', 'confirmed', 'production', 'ready', 'delivered'].map(key => ({
+    key, label: key === 'production' ? 'En costura' : statuses[key],
+    count: data.statuses.find(stage => stage.status === key)?.count ?? 0
+  }));
+  mountWorkshop(view.querySelector('#workshop-overview'), {
+    orders: data.orderCount, income: totalLabel(data.income), spent: totalLabel(data.spent), stages
+  });
   const reload = page => loadDashboard(view, context, { from: data.from, to: data.to, page: page || data.page });
   onSubmit(view.querySelector('#period'), fields => loadDashboard(view, context, Object.fromEntries(fields)));
   onSubmit(view.querySelector('#purchase'), async fields => {

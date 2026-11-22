@@ -1,8 +1,16 @@
+FROM node:24-bookworm-slim AS frontend
+WORKDIR /source/frontend
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY frontend/ ./
+RUN npm run check && npm run build
+
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /source
 COPY backend/Calubridi.Api/Calubridi.Api.csproj backend/Calubridi.Api/
 RUN dotnet restore backend/Calubridi.Api/Calubridi.Api.csproj
 COPY backend/Calubridi.Api/ backend/Calubridi.Api/
+COPY --from=frontend /source/backend/Calubridi.Api/wwwroot/assets/panels.js backend/Calubridi.Api/wwwroot/assets/panels.js
 RUN dotnet publish backend/Calubridi.Api/Calubridi.Api.csproj -c Release --no-restore -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0

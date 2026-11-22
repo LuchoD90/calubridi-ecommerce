@@ -17,3 +17,31 @@ body{line-height:1.6}.ribbon{padding:.42rem .75rem;letter-spacing:.16em;font-siz
 @media(max-width:960px){.hero{gap:1rem}.hero-copy{padding:1.35rem}.hero h1{font-size:clamp(2.6rem,5.3vw,4.4rem)}.hero-actions{gap:.5rem}.hero .button{padding-inline:.7rem}}
 @media(max-width:700px){.site-header{grid-template-columns:1fr auto;min-height:0;padding-top:.55rem}.site-header nav{grid-column:1/-1;grid-row:2;justify-content:flex-start;padding:.45rem 0 .65rem;gap:1.1rem}.header-actions{gap:.35rem}.header-actions a{min-width:36px}.hero{grid-template-columns:1fr;border-radius:16px;gap:0;padding:.7rem}.hero-copy{padding:1.05rem .75rem 1.35rem}.hero h1{font-size:clamp(2.6rem,9vw,4.3rem)}.hero-image{aspect-ratio:1.5;border-radius:10px}.hero .intro{margin-bottom:1rem}.catalog-tools .search-label{width:100%}.steps>div{margin:.25rem 0}}
 @media(max-width:380px){.hero-actions .button{width:100%}.wordmark{font-size:1.55rem}.header-actions{gap:0}}
+
+.access-layout{display:grid;grid-template-columns:1fr 1fr;max-width:1080px;margin-inline:auto;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--white)}
+.access-story{display:grid;grid-template-rows:minmax(210px,1fr) auto;background:var(--ivory);align-content:stretch}
+.access-story img{width:100%;height:100%;object-fit:cover;min-height:220px;max-height:435px}
+.access-story>div{padding:clamp(1.15rem,3vw,2.25rem)}
+.access-story h3{font-size:clamp(1.5rem,3vw,2.35rem);margin:.4rem 0}
+.access-story p{color:var(--muted);margin:0}
+.access-panel{padding:clamp(1.15rem,4vw,3.5rem);align-self:center}
+.access-panel h2{margin-top:0}.access-panel .form{margin:0}
+.access-switch{display:grid;grid-template-columns:1fr 1fr;gap:.2rem;border-radius:10px;padding:.25rem;background:var(--ivory);margin-bottom:1.25rem}
+.access-switch button,.access-password button{font:inherit;font-weight:750;color:var(--olive);border:0;background:transparent;cursor:pointer}
+.access-switch button{padding:.65rem .3rem;border-radius:7px}
+.access-switch [aria-pressed=true]{background:var(--white);box-shadow:0 1px 3px #49302222}
+.access-password{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.45rem;align-items:center}
+.access-password button{padding:.6rem}
+.access-panel .access-submit,.access-panel .google-access{width:100%;justify-content:center}
+.access-divider{text-align:center;color:var(--muted);font-size:.9rem;margin:.8rem 0}
+.access-notice{border-radius:9px;background:var(--ivory);padding:.7rem 1rem;margin:.8rem 0}
+.account-link{margin-bottom:1rem}
+.workshop-overview{display:grid;gap:1rem}
+.workshop-stages{padding:clamp(1rem,2vw,1.6rem);background:#f7efe6;border:1px solid var(--line);border-radius:16px}
+.workshop-title{display:flex;justify-content:space-between;align-items:baseline;gap:.65rem;flex-wrap:wrap;margin-bottom:.9rem}
+.workshop-title a{font-weight:750;text-underline-offset:.2em;text-decoration:underline}
+.workshop-track{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55rem}
+.workshop-stage{background:var(--white);padding:.8rem;border-radius:10px;color:var(--muted);min-width:0}
+.workshop-stage.has-orders{box-shadow:inset 0 3px 0 var(--accent)}
+.workshop-stage strong{display:block;font-size:1.5rem;color:var(--ink)}
+@media(max-width:690px){.access-layout{grid-template-columns:1fr}.access-story{order:2;grid-template-rows:130px auto}.access-story img{min-height:0}.workshop-track{grid-template-columns:repeat(2,minmax(0,1fr))}}
