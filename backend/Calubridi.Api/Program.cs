@@ -98,6 +98,21 @@ if (args.Contains("--initialize"))
 if (app.Configuration.GetValue<bool>("Store:InitializeOnStart"))
     await StoreSetup.InitializeAsync(app.Services, app.Configuration);
 
+// Render redirects public HTTP to HTTPS before forwarding to this free
+// service. Use the platform's configured public hostname and ignore all
+// forwarded headers; cookie security stays unchanged.
+if (app.Configuration.GetValue<bool>("RENDER") &&
+    app.Configuration["RENDER_EXTERNAL_HOSTNAME"] is { Length: > 0 } renderHost)
+{
+    app.Use(async (context, next) =>
+    {
+        if (string.Equals(context.Request.Host.Host, renderHost, StringComparison.OrdinalIgnoreCase))
+            context.Request.Scheme = "https";
+
+        await next();
+    });
+}
+
 app.UseExceptionHandler();
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 else app.UseHsts();
