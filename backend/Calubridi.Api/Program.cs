@@ -91,12 +91,12 @@ builder.Services.AddRateLimiter(options =>
 var app = builder.Build();
 if (args.Contains("--initialize"))
 {
-    await StoreSetup.InitializeAsync(app.Services, app.Configuration, app.Environment);
+    await StoreSetup.InitializeAsync(app.Services, app.Configuration);
     return;
 }
 
 if (app.Configuration.GetValue<bool>("Store:InitializeOnStart"))
-    await StoreSetup.InitializeAsync(app.Services, app.Configuration, app.Environment);
+    await StoreSetup.InitializeAsync(app.Services, app.Configuration);
 
 app.UseExceptionHandler();
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
@@ -118,12 +118,14 @@ app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapGet("/healthz", () => Results.Ok());
 app.MapGet("/api/account/session", (HttpContext context, IAntiforgery antiforgery) =>
     Results.Ok(new
     {
         user = context.User.Identity?.IsAuthenticated == true ? context.User.Identity.Name : null,
         admin = context.User.IsInRole("Admin"),
         google = googleEnabled,
+        demo = app.Configuration.GetValue<bool>("Store:SeedDemo"),
         csrf = antiforgery.GetAndStoreTokens(context).RequestToken
     }));
 app.Run();

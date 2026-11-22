@@ -6,6 +6,7 @@
   <meta name="description" content="Calubridi, taller de costura. Descubrí diseños realizados en el atelier y encargá el tuyo.">
   <title>Calubridi · Tela en casa</title>
   <link rel="icon" href="/assets/calubridi-logo.webp">
+  <link rel="preload" href="/assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/style.css">
   <script type="module" src="/shop.js"></script>
 </head>
@@ -22,38 +23,33 @@
   </header>
   <main id="main">
     <section id="home">
-      <div class="hero" id="inicio">
+      <section class="hero content-width" id="inicio" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span></span> CALUBRIDI · TELA EN CASA</p>
-          <h1>Costura<br>con <em>alma.</em></h1>
+          <h1 id="hero-title">Práctico, cómodo<br><em>y único</em></h1>
           <p class="intro">Carteritas, organizadores y accesorios de tela hechos por encargo. Elegí el diseño, la tela y el color que más te gusten.</p>
-          <a class="button" href="#catalogo">Explorar colección <span aria-hidden="true">↗</span></a>
-          <a class="hero-link" href="#arreglos">Ver arreglos de costura</a>
+          <div class="hero-actions">
+            <a class="button" href="#catalogo">Explorar colección</a>
+            <a class="button secondary" href="#arreglos">Ver arreglos</a>
+          </div>
         </div>
         <figure class="hero-image">
-          <img src="/assets/atelier.webp" alt="Máquina de coser, lino y tijeras de sastre en una mesa de taller" fetchpriority="high">
-          <figcaption><span>CALUBRIDI</span><span>EL TALLER</span></figcaption>
+          <img src="/assets/godeco-en-uso.webp" alt="Manos guiando tela de lino debajo de la aguja de una máquina de coser Godeco" fetchpriority="high" width="1440" height="960">
         </figure>
-      </div>
-      <div class="qualities">
-        <span><i aria-hidden="true">✧</i> Confección artesanal</span>
-        <span><i aria-hidden="true">◈</i> Producción por pedido</span>
-        <span><i aria-hidden="true">♡</i> Atención del taller</span>
-      </div>
+      </section>
       <section id="catalogo" class="catalog content-width">
-        <div class="section-title"><div><p class="eyebrow">DISEÑOS DEL ATELIER</p><h2>La colección</h2></div><p>Elegí un diseño para tu próximo encargo.</p></div>
+        <div class="section-title"><div><h2>La colección</h2></div><p>Encontrá un diseño y personalizalo con tu tela y color.</p></div>
         <div class="catalog-tools"><div id="filters" aria-label="Categorías"></div><label class="search-label"><span class="sr-only">Buscar diseños</span><input id="search" type="search" maxlength="120" placeholder="Buscar diseños…"></label></div>
         <div id="products" class="product-grid" aria-live="polite"><p>Cargando la colección…</p></div>
       </section>
       <section id="atelier" class="atelier">
-        <div class="content-width"><p class="eyebrow">EL ATELIER</p><h2>Del taller a vos.</h2>
+        <div class="content-width"><h2>Cómo hacer un encargo</h2>
           <div class="steps"><div><h3>Elegí</h3><p>Recorré los diseños y elegí las opciones disponibles en cada pieza.</p></div><div><h3>Encargá</h3><p>Dejanos tus datos y las indicaciones de confección al hacer el pedido.</p></div><div><h3>Seguí tu pedido</h3><p>El taller coordina el pago y entrega. Podés consultar el avance desde tu cuenta.</p></div></div>
         </div>
       </section>
       <section id="arreglos" class="repair-section">
         <div class="content-width repair-grid">
           <figure class="repair-photo"><img src="/assets/arreglos.webp" alt="Detalle de un cierre de campera arreglado en el taller" loading="lazy"></figure>
-          <div class="repair-copy"><p class="eyebrow">ARREGLOS DE COSTURA</p><h2>Volvé a usar<br>lo que te gusta.</h2>
+          <div class="repair-copy"><h2>Arreglos de costura</h2>
             <p>¿Un cierre que dejó de funcionar, un ruedo que ajustar o una costura que se abrió? Contame qué necesitás y coordinamos el arreglo.</p>
             <p>Por WhatsApp podés mandarme una foto de la prenda para que pueda orientarte con el trabajo y el plazo.</p>
             <a class="button" data-whatsapp="repair" href="https://wa.me/5491122772215" target="_blank" rel="noopener noreferrer">Consultar un arreglo por WhatsApp</a>
@@ -61,7 +57,7 @@
         </div>
       </section>
       <section id="consulta" class="contact-section content-width">
-        <div class="contact-grid"><div><p class="eyebrow">CONTACTO</p><h2>¿En qué te ayudo?</h2>
+        <div class="contact-grid"><div><h2>Dejá tu consulta</h2>
           <p>Si tenés una consulta sobre un arreglo o un diseño por encargo, dejame tu número y te respondo por teléfono o WhatsApp.</p>
           <a class="hero-link" href="https://www.instagram.com/calubridi.tela.encasa/" target="_blank" rel="noopener noreferrer">@calubridi.tela.encasa</a>
         </div><form class="form panel" id="inquiry-form">
@@ -76,7 +72,7 @@
     </section>
     <section id="view" class="content-width view" hidden></section>
   </main>
-  <footer><a class="wordmark" href="#inicio"><img src="/assets/calubridi-logo.webp" alt="" width="54" height="54"><span>Calubridi<small>TELA EN CASA</small></span></a><p>Atelier de costura · Confección por encargo</p><a href="#atelier">Cómo funciona <span aria-hidden="true">↗</span></a></footer>
+  <footer><a class="wordmark" href="#inicio"><img src="/assets/calubridi-logo.webp" alt="" width="54" height="54"><span>Calubridi<small>TELA EN CASA</small></span></a><p>Atelier de costura · Confección por encargo</p><a href="#atelier">Cómo funciona</a></footer>
   <a class="whatsapp-float" data-whatsapp="general" data-icon="whatsapp" href="https://wa.me/5491122772215" aria-label="Escribir a Calubridi por WhatsApp" target="_blank" rel="noopener noreferrer"></a>
   <div id="toast" role="status" aria-live="polite"></div>
 </body>

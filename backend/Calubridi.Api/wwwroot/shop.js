@@ -297,6 +297,7 @@ async function route() {
 
 try {
   [catalog] = await Promise.all([api('/api/shop/catalog'), refreshSession()]);
+  if (session.demo) document.querySelector('.ribbon').textContent = 'TIENDA DE PRUEBA · CATÁLOGO Y PRECIOS DE MUESTRA';
   await syncFavorites();
   renderCatalog();
 } catch (e) { products.innerHTML = `<p class="empty error">${esc(e.message)} <a href="">Reintentar</a></p>`; }

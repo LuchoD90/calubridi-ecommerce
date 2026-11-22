@@ -8,7 +8,7 @@ export const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true">${icons
 export const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 })[c]);
-export const media = url => typeof url === 'string' && /^\/uploads\/[a-z0-9_./-]+$/i.test(url) ? esc(url) : '';
+export const media = url => typeof url === 'string' && /^\/(?:uploads\/|assets\/(?=(?:carterita|monedero)\.webp$))[a-z0-9_./-]+$/i.test(url) ? esc(url) : '';
 export const money = (amount, currency = 'ARS') => new Intl.NumberFormat('es-AR', {
   style: 'currency', currency, maximumFractionDigits: 2
 }).format(amount);

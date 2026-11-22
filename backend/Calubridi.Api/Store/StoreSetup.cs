@@ -15,7 +15,7 @@ internal static class StoreSetup
         return code;
     }
 
-    public static async Task InitializeAsync(IServiceProvider services, IConfiguration config, IWebHostEnvironment environment)
+    public static async Task InitializeAsync(IServiceProvider services, IConfiguration config)
     {
         await using var scope = services.CreateAsyncScope();
         var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -38,25 +38,31 @@ internal static class StoreSetup
             }
         }
 
-        if (environment.IsDevelopment() && config.GetValue<bool>("Store:SeedDemo") && !await db.Products.AnyAsync())
+        if (config.GetValue<bool>("Store:SeedDemo") && !await db.Products.AnyAsync())
         {
-            var category = new Category { Name = "Vestidos" };
-            var examples = new[] {
-                ("Vestido Carmín", "Una silueta amplia con mangas cortas y cintura marcada.", 75000m, 12, "producto-prueba.jpg"),
-                ("Vestido Lunares", "Lunares clásicos y falda con vuelo.", 69000m, 10, "Prueba2.jpg"),
-                ("Vestido Girasol", "Diseño ilustrado con tirantes finos y lazo en la cintura.", 64000m, 14, "Prueba3.jpg")
-            };
-            var folder = Path.Combine(environment.WebRootPath, "uploads", "products");
-            Directory.CreateDirectory(folder);
-            foreach (var (name, description, price, days, file) in examples)
+            var printed = new Fabric { Name = "Gabardina estampada" };
+            var plain = new Fabric { Name = "Gabardina lisa" };
+            var natural = new Color { Name = "Natural", HexCode = "#B78D72" };
+            var chocolate = new Color { Name = "Chocolate", HexCode = "#593C34" };
+            var bag = new Product
             {
-                System.IO.File.Copy(Path.Combine(environment.ContentRootPath, "test-files", file),
-                    Path.Combine(folder, "demo-" + file), overwrite: true);
-                db.Products.Add(new Product {
-                    Name = name, Description = description, Price = price, EstimatedProductionDays = days,
-                    Category = category, CoverUrl = "/uploads/products/demo-" + file
-                });
-            }
+                Name = "Carterita estampada", Description = "Carterita de tela con correa. Diseño de muestra.",
+                Price = 22000m, EstimatedProductionDays = 7, Category = new Category { Name = "Carteras y bolsos" },
+                CoverUrl = "/assets/carterita.webp",
+                Fabrics = [
+                    new ProductFabric { Fabric = printed, Price = 22000m, IsDefault = true,
+                        Colors = [new ProductFabricColor { Color = natural, IsDefault = true }] },
+                    new ProductFabric { Fabric = plain, Price = 20500m,
+                        Colors = [new ProductFabricColor { Color = chocolate, IsDefault = true }] }
+                ]
+            };
+            var wallet = new Product
+            {
+                Name = "Monedero con broches", Description = "Monedero compacto con dos broches. Diseño de muestra.",
+                Price = 9500m, EstimatedProductionDays = 5, Category = new Category { Name = "Accesorios" },
+                CoverUrl = "/assets/monedero.webp"
+            };
+            db.Products.AddRange(bag, wallet);
             await db.SaveChangesAsync();
         }
     }

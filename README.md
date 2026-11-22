@@ -19,7 +19,7 @@ Remove-Item Env:BootstrapAdmin__Password
 dotnet run --no-launch-profile
 ```
 
-Abrí [http://localhost:5080](http://localhost:5080). Usá el correo de administración que configuraste para entrar a **Mi cuenta → Panel del taller**. El administrador inicial se crea de forma explícita. Si la dirección ya pertenece a una cuenta de cliente, elegí otra para el administrador. Las imágenes y precios de demostración solo se cargan en desarrollo y con el catálogo vacío. Para una base real, ejecutá la inicialización con `Store__SeedDemo` desactivado.
+Abrí [http://localhost:5080](http://localhost:5080). Usá el correo de administración que configuraste para entrar a **Mi cuenta → Panel del taller**. El administrador inicial se crea de forma explícita. Si la dirección ya pertenece a una cuenta de cliente, elegí otra para el administrador. Los diseños, imágenes y precios de demostración se cargan si activás `Store__SeedDemo` y el catálogo está vacío. Para una base real, ejecutá la inicialización con `Store__SeedDemo` desactivado.
 
 ## Flujo del taller
 
@@ -39,7 +39,7 @@ El esquema nuevo tiene una migración de EF que conserva las tablas existentes. 
 
 ### Contenedor de prueba
 
-El `Dockerfile` de la raíz publica la aplicación para Linux en el puerto 8080. Pasale `ConnectionStrings__DefaultConnection` y los secretos como variables del entorno en el momento de ejecutar el contenedor. Ejecutá el contenedor una vez con `--initialize` para aplicar las migraciones y crear el administrador, y luego iniciá el servicio sin ese argumento. La imagen del contenedor excluye los datos de muestra y los archivos cargados localmente.
+El `Dockerfile` de la raíz publica la aplicación para Linux en el puerto 8080. Pasale `ConnectionStrings__DefaultConnection` y los secretos como variables del entorno en el momento de ejecutar el contenedor. Ejecutá el contenedor una vez con `--initialize` para aplicar las migraciones y crear el administrador, y luego iniciá el servicio sin ese argumento. La imagen excluye los archivos cargados localmente. Las dos fotos del catálogo de prueba están incluidas para poder probar Render desde el primer inicio.
 
 Un servicio Free de Render puede ejecutar la imagen con PostgreSQL para pruebas temporales. Su disco es efímero, así que las cargas locales se pierden al reiniciar. Para una instalación con catálogo real, usá almacenamiento persistente para las cargas y una base con copias de seguridad.
 
@@ -48,3 +48,5 @@ Un servicio Free de Render puede ejecutar la imagen con PostgreSQL para pruebas 
 La sección **Arreglos** y el botón de WhatsApp abren el número comercial publicado por Calubridi. El formulario exige un teléfono con código de área. Los mensajes se guardan en PostgreSQL y se pueden revisar en **Panel del taller → Consultas**, donde el administrador puede llamar y marcar el mensaje como respondido. No se envían mensajes automáticos.
 
 El archivo `render.yaml` permite crear una instalación de prueba con Docker y PostgreSQL en Render. Vinculá el repositorio y la rama del PR, y cargá correo y contraseña del administrador mediante el formulario de secretos de Render. La base gratuita vence y las fotos subidas al disco del contenedor se pierden al reiniciar. Usá datos ficticios durante las pruebas.
+
+La portada utiliza una imagen ilustrativa generada de una máquina Godeco en uso. Las fotos del catálogo de demostración provienen de las referencias de Calubridi.
