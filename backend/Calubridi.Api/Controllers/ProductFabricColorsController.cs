@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Calubridi.Api.Data;
 using Calubridi.Api.DTOs.ProductFabricColors;
 using Calubridi.Api.Models;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Calubridi.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/products/{productId:int}/fabrics/{productFabricId:int}/colors")]
 public class ProductFabricColorsController : ControllerBase
 {

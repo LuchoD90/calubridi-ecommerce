@@ -1,9 +1,11 @@
 using Calubridi.Api.Models;
+using Calubridi.Api.Store;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Calubridi.Api.Data;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<StoreUser>
 {
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options)
@@ -27,9 +29,24 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<ProductVideo> ProductVideos { get; set; }
 
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<Favorite> Favorites => Set<Favorite>();
+    public DbSet<SupplierPurchase> SupplierPurchases => Set<SupplierPurchase>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<StoreUser>().HasIndex(u => u.NormalizedEmail).IsUnique();
+        modelBuilder.Entity<Favorite>().HasKey(f => new { f.UserId, f.ProductId });
+        modelBuilder.Entity<Favorite>().HasOne<StoreUser>().WithMany().HasForeignKey(f => f.UserId);
+        modelBuilder.Entity<Favorite>().HasOne<Product>().WithMany().HasForeignKey(f => f.ProductId);
+        modelBuilder.Entity<Order>().HasOne<StoreUser>().WithMany().HasForeignKey(o => o.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Order>().HasIndex(o => new { o.UserId, o.CheckoutKey }).IsUnique();
+        modelBuilder.Entity<Order>().Property(o => o.Revision).IsConcurrencyToken();
+        modelBuilder.Entity<Order>().HasIndex(o => o.CreatedAt);
+        modelBuilder.Entity<SupplierPurchase>().HasIndex(p => p.Date);
 
         // =========================================================
         // PRODUCT -> CATEGORY

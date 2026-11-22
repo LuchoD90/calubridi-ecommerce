@@ -1,3 +1,5 @@
+using Calubridi.Api.Store;
+using Microsoft.AspNetCore.Authorization;
 using Calubridi.Api.Data;
 using Calubridi.Api.DTOs.ProductMedia;
 using Calubridi.Api.Models;
@@ -7,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Calubridi.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/products/{productId:int}/fabrics/{productFabricId:int}/colors/{productFabricColorId:int}/media")]
 public class ProductMediaController : ControllerBase
 {
@@ -71,7 +74,7 @@ public class ProductMediaController : ControllerBase
     // POST - Subir imagen
     // =========================================================
 
-    [HttpPost]
+    [HttpPost, RequestSizeLimit(11 * 1024 * 1024)]
     public async Task<ActionResult<ProductMediaResponseDto>> UploadMedia(
         int productId,
         int productFabricId,
@@ -102,35 +105,9 @@ public class ProductMediaController : ControllerBase
             });
         }
 
-        var imageExtensions = new[]
-        {
-            ".jpg",
-            ".jpeg",
-            ".png",
-            ".webp"
-        };
-
-        var extension = Path
-            .GetExtension(file.FileName)
-            .ToLowerInvariant();
-
-        if (!imageExtensions.Contains(extension))
-        {
-            return BadRequest(new
-            {
-                message = "Formato no permitido. Se aceptan JPG, JPEG, PNG y WEBP."
-            });
-        }
-
-        const long maxImageSize = 10 * 1024 * 1024;
-
-        if (file.Length > maxImageSize)
-        {
-            return BadRequest(new
-            {
-                message = "La imagen no puede superar los 10 MB."
-            });
-        }
+        var extension = await UploadFormat.ImageExtension(file);
+        if (extension is null)
+            return BadRequest(new { message = "Elegí un JPG, PNG o WebP válido de hasta 10 MB." });
 
         var uploadsFolder = Path.Combine(
             _environment.ContentRootPath,

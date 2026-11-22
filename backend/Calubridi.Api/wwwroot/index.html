@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Calibridi, taller de costura. Descubrí diseños realizados en el atelier y encargá el tuyo.">
+  <title>Calibridi — Atelier de costura</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/shop.js"></script>
+</head>
+<body>
+  <div class="ribbon">ATELIER DE COSTURA <span>·</span> CONFECCIÓN POR ENCARGO</div>
+  <header class="site-header">
+    <a class="wordmark" href="#inicio" aria-label="Calibridi inicio">calibridi<span>.</span></a>
+    <nav aria-label="Navegación principal"><a href="#catalogo">Colección</a><a href="#atelier">El atelier</a></nav>
+    <div class="header-actions">
+      <a href="#favoritos" aria-label="Favoritos" data-icon="heart"></a>
+      <a href="#cuenta" aria-label="Mi cuenta" data-icon="user"></a>
+      <a href="#carrito" aria-label="Carrito" data-icon="bag"><span id="bag-count" class="count">0</span></a>
+    </div>
+  </header>
+  <main id="main">
+    <section id="home">
+      <div class="hero" id="inicio">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> CALIBRIDI ATELIER</p>
+          <h1>Costura<br>con <em>alma.</em></h1>
+          <p class="intro">Diseños que nacen en el taller y se hacen por encargo. Elegí una pieza, contanos cómo la querés y la confeccionamos para vos.</p>
+          <a class="button" href="#catalogo">Explorar colección <span aria-hidden="true">↗</span></a>
+        </div>
+        <figure class="hero-image">
+          <img src="/assets/atelier.webp" alt="Máquina de coser, lino y tijeras de sastre en una mesa de taller" fetchpriority="high">
+          <figcaption><span>CALIBRIDI</span><span>EL TALLER</span></figcaption>
+        </figure>
+      </div>
+      <div class="qualities">
+        <span><i aria-hidden="true">✧</i> Confección artesanal</span>
+        <span><i aria-hidden="true">◈</i> Producción por pedido</span>
+        <span><i aria-hidden="true">♡</i> Atención del taller</span>
+      </div>
+      <section id="catalogo" class="catalog content-width">
+        <div class="section-title"><div><p class="eyebrow">DISEÑOS DEL ATELIER</p><h2>La colección</h2></div><p>Elegí un diseño para tu próximo encargo.</p></div>
+        <div class="catalog-tools"><div id="filters" aria-label="Categorías"></div><label class="search-label"><span class="sr-only">Buscar diseños</span><input id="search" type="search" maxlength="120" placeholder="Buscar diseños…"></label></div>
+        <div id="products" class="product-grid" aria-live="polite"><p>Cargando la colección…</p></div>
+      </section>
+      <section id="atelier" class="atelier">
+        <div class="content-width"><p class="eyebrow">EL ATELIER</p><h2>Del taller a vos.</h2>
+          <div class="steps"><div><h3>Elegí</h3><p>Recorré los diseños y elegí las opciones disponibles en cada pieza.</p></div><div><h3>Encargá</h3><p>Dejanos tus datos y las indicaciones de confección al hacer el pedido.</p></div><div><h3>Seguí tu pedido</h3><p>El taller coordina el pago y entrega. Podés consultar el avance desde tu cuenta.</p></div></div>
+        </div>
+      </section>
+    </section>
+    <section id="view" class="content-width view" hidden></section>
+  </main>
+  <footer><a class="wordmark" href="#inicio">calibridi<span>.</span></a><p>Atelier de costura · Confección por encargo</p><a href="#atelier">Cómo funciona <span aria-hidden="true">↗</span></a></footer>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,3 +1,5 @@
+using Calubridi.Api.Store;
+using Microsoft.AspNetCore.Authorization;
 using Calubridi.Api.Data;
 using Calubridi.Api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Calubridi.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/products/{productId:int}/videos")]
 public class ProductVideosController : ControllerBase
 {
@@ -53,7 +56,7 @@ public class ProductVideosController : ControllerBase
     // POST - Subir video
     // =========================================================
 
-    [HttpPost]
+    [HttpPost, RequestSizeLimit(101 * 1024 * 1024)]
     public async Task<ActionResult<ProductVideo>> UploadVideo(
         int productId,
         IFormFile file,
@@ -88,7 +91,7 @@ public class ProductVideosController : ControllerBase
             .GetExtension(file.FileName)
             .ToLowerInvariant();
 
-        if (!videoExtensions.Contains(extension))
+        if (!videoExtensions.Contains(extension) || !await UploadFormat.IsVideo(file, extension))
         {
             return BadRequest(new
             {

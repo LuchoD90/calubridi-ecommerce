@@ -1,0 +1,7 @@
+.git
+**/bin
+**/obj
+**/wwwroot/uploads
+**/test-files
+*.user
+.env*
