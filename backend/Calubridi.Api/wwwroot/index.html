@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Calubridi, taller de costura. Descubrí diseños realizados en el atelier y encargá el tuyo.">
+  <title>Calubridi · Tela en casa</title>
+  <link rel="icon" href="/assets/calubridi-logo.webp">
+  <link rel="preload" href="/assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/shop.js"></script>
+</head>
+<body>
+  <div class="ribbon">TELA EN CASA <span>·</span> CONFECCIÓN POR ENCARGO</div>
+  <header class="site-header">
+    <a class="wordmark" href="#inicio" aria-label="Calubridi inicio"><img src="/assets/calubridi-logo.webp" alt="" width="54" height="54"><span>Calubridi<small>TELA EN CASA</small></span></a>
+    <nav aria-label="Navegación principal"><a href="#catalogo">Colección</a><a href="#arreglos">Arreglos</a><a href="#consulta">Consultas</a></nav>
+    <div class="header-actions">
+      <a href="#favoritos" aria-label="Favoritos" data-icon="heart"></a>
+      <a href="#cuenta" aria-label="Mi cuenta" data-icon="user"></a>
+      <a href="#carrito" aria-label="Carrito" data-icon="bag"><span id="bag-count" class="count">0</span></a>
+    </div>
+  </header>
+  <main id="main">
+    <section id="home">
+      <section class="hero content-width" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title">Práctico, cómodo<br><em>y único</em></h1>
+          <p class="intro">Carteritas, organizadores y accesorios de tela hechos por encargo. Elegí el diseño, la tela y el color que más te gusten.</p>
+          <div class="hero-actions">
+            <a class="button" href="#catalogo">Explorar colección</a>
+            <a class="button secondary" href="#arreglos">Ver arreglos</a>
+          </div>
+        </div>
+        <figure class="hero-image">
+          <img src="/assets/godeco-en-uso.webp" alt="Manos guiando tela de lino debajo de la aguja de una máquina de coser Godeco" fetchpriority="high" width="1440" height="960">
+        </figure>
+      </section>
+      <section id="catalogo" class="catalog content-width">
+        <div class="section-title"><div><h2>La colección</h2></div><p>Encontrá un diseño y personalizalo con tu tela y color.</p></div>
+        <div class="catalog-tools"><div id="filters" aria-label="Categorías"></div><label class="search-label"><span class="sr-only">Buscar diseños</span><input id="search" type="search" maxlength="120" placeholder="Buscar diseños…"></label></div>
+        <div id="products" class="product-grid" aria-live="polite"><p>Cargando la colección…</p></div>
+      </section>
+      <section id="atelier" class="atelier">
+        <div class="content-width"><h2>Cómo hacer un encargo</h2>
+          <div class="steps"><div><h3>Elegí</h3><p>Recorré los diseños y elegí las opciones disponibles en cada pieza.</p></div><div><h3>Encargá</h3><p>Dejanos tus datos y las indicaciones de confección al hacer el pedido.</p></div><div><h3>Seguí tu pedido</h3><p>El taller coordina el pago y entrega. Podés consultar el avance desde tu cuenta.</p></div></div>
+        </div>
+      </section>
+      <section id="arreglos" class="repair-section">
+        <div class="content-width repair-grid">
+          <figure class="repair-photo"><img src="/assets/arreglos.webp" alt="Detalle de un cierre de campera arreglado en el taller" loading="lazy"></figure>
+          <div class="repair-copy"><h2>Arreglos de costura</h2>
+            <p>¿Un cierre que dejó de funcionar, un ruedo que ajustar o una costura que se abrió? Contame qué necesitás y coordinamos el arreglo.</p>
+            <p>Por WhatsApp podés mandarme una foto de la prenda para que pueda orientarte con el trabajo y el plazo.</p>
+            <a class="button" data-whatsapp="repair" href="https://wa.me/5491122772215" target="_blank" rel="noopener noreferrer">Consultar un arreglo por WhatsApp</a>
+          </div>
+        </div>
+      </section>
+      <section id="consulta" class="contact-section content-width">
+        <div class="contact-grid"><div><h2>Dejá tu consulta</h2>
+          <p>Si tenés una consulta sobre un arreglo o un diseño por encargo, dejame tu número y te respondo por teléfono o WhatsApp.</p>
+          <a class="hero-link" href="https://www.instagram.com/calubridi.tela.encasa/" target="_blank" rel="noopener noreferrer">@calubridi.tela.encasa</a>
+        </div><form class="form panel" id="inquiry-form">
+          <label>Nombre<input name="name" autocomplete="name" maxlength="100" required></label>
+          <label>Teléfono con código de área<input name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="32" placeholder="Ej. 11 2345 6789" required></label>
+          <label>Motivo<select name="topic" required><option value="">Elegí un motivo</option><option value="arreglos">Arreglos de costura</option><option value="pedidos">Diseños por encargo</option><option value="otra">Otra consulta</option></select></label>
+          <label>Tu consulta<textarea name="message" minlength="8" maxlength="1500" rows="4" required></textarea></label>
+          <p class="muted">Usamos tu teléfono para responder a esta consulta.</p>
+          <button type="submit" class="button">Enviar consulta</button><p class="error" role="alert"></p><p class="inquiry-success" role="status" tabindex="-1"></p>
+        </form></div>
+      </section>
+    </section>
+    <section id="view" class="content-width view" hidden></section>
+  </main>
+  <footer><a class="wordmark" href="#inicio"><img src="/assets/calubridi-logo.webp" alt="" width="54" height="54"><span>Calubridi<small>TELA EN CASA</small></span></a><p>Atelier de costura · Confección por encargo</p><a href="#atelier">Cómo funciona</a></footer>
+  <a class="whatsapp-float" data-whatsapp="general" data-icon="whatsapp" href="https://wa.me/5491122772215" aria-label="Escribir a Calubridi por WhatsApp" target="_blank" rel="noopener noreferrer"></a>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

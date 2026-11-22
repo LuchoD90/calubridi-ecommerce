@@ -480,3 +480,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Archivos cargados desde la tienda
+/backend/Calubridi.Api/wwwroot/uploads/

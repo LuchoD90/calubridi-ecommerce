@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Calubridi.Api.Data;
 using Calubridi.Api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Calubridi.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 public class FabricsController : ControllerBase
 {

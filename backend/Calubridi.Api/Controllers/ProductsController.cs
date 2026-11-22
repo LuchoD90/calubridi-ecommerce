@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Calubridi.Api.Data;
 using Calubridi.Api.DTOs.Products;
 using Calubridi.Api.Models;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Calubridi.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 public class ProductsController : ControllerBase
 {
@@ -116,7 +118,7 @@ public class ProductsController : ControllerBase
             Description = dto.Description,
             Price = dto.Price,
             EstimatedProductionDays = dto.EstimatedProductionDays,
-            IsActive = true,
+            IsActive = dto.IsActive,
             CreatedAt = DateTime.UtcNow,
             CategoryId = category.Id
         };

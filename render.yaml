@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: calubridi-tienda-pruebas
+    runtime: docker
+    plan: free
+    region: oregon
+    branch: feature/calibridi-storefront
+    healthCheckPath: /healthz
+    autoDeployTrigger: off
+    envVars:
+      - key: Database__Url
+        fromDatabase:
+          name: calubridi-pruebas-db
+          property: connectionString
+      - key: BootstrapAdmin__Email
+        value: admin@calubridi.example
+      - key: BootstrapAdmin__Password
+        generateValue: true
+      - key: Store__SeedDemo
+        value: "true"
+      - key: Store__InitializeOnStart
+        value: "true"
+databases:
+  - name: calubridi-pruebas-db
+    databaseName: calubridi
+    plan: free
+    region: oregon
+    ipAllowList: []
