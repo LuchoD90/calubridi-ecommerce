@@ -51,9 +51,9 @@ internal static class StoreSetup
                 CoverUrl = "/assets/carterita.webp",
                 Fabrics = [
                     new ProductFabric { Fabric = printed, Price = 22000m, IsDefault = true,
-                        Colors = [new ProductFabricColor { Color = natural, IsDefault = true }] },
+                        Colors = [new ProductFabricColor { Color = natural, IsDefault = true, IsActive = true }] },
                     new ProductFabric { Fabric = plain, Price = 20500m,
-                        Colors = [new ProductFabricColor { Color = chocolate, IsDefault = true }] }
+                        Colors = [new ProductFabricColor { Color = chocolate, IsDefault = true, IsActive = true }] }
                 ]
             };
             var wallet = new Product
