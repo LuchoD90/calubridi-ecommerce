@@ -50,3 +50,18 @@ public sealed class SupplierPurchase
     public decimal Total { get; set; }
     public string Currency { get; set; } = "";
 }
+
+public sealed class Inquiry
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    [System.ComponentModel.DataAnnotations.MaxLength(100)]
+    public string Name { get; set; } = "";
+    [System.ComponentModel.DataAnnotations.MaxLength(32)]
+    public string Phone { get; set; } = "";
+    [System.ComponentModel.DataAnnotations.MaxLength(10)]
+    public string Topic { get; set; } = "";
+    [System.ComponentModel.DataAnnotations.MaxLength(1500)]
+    public string Message { get; set; } = "";
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? AnsweredAt { get; set; }
+}

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 var googleId = builder.Configuration["Google:ClientId"];
@@ -17,8 +18,22 @@ builder.Services.AddControllersWithViews(options => options.Filters.Add(new Auto
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(
-    builder.Configuration.GetConnectionString("DefaultConnection")));
+var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connection) && builder.Configuration["Database:Url"] is { Length: > 0 } dbUrl)
+{
+    var uri = new Uri(dbUrl);
+    var credentials = uri.UserInfo.Split(':', 2);
+    if (uri.Scheme is not ("postgresql" or "postgres") || credentials.Length != 2)
+        throw new InvalidOperationException("Database:Url debe ser una URL PostgreSQL con credenciales.");
+    connection = new NpgsqlConnectionStringBuilder
+    {
+        Host = uri.Host, Port = uri.Port < 0 ? 5432 : uri.Port,
+        Database = Uri.UnescapeDataString(uri.AbsolutePath.TrimStart('/')),
+        Username = Uri.UnescapeDataString(credentials[0]), Password = Uri.UnescapeDataString(credentials[1]),
+        SslMode = SslMode.Require
+    }.ConnectionString;
+}
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connection));
 builder.Services.AddIdentity<StoreUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
@@ -65,6 +80,9 @@ builder.Services.AddAntiforgery(options =>
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = 429;
+    options.AddPolicy("inquiries", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.Connection.RemoteIpAddress?.ToString() ?? "local",
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 6, Window = TimeSpan.FromMinutes(10) }));
     options.AddPolicy("accounts", context => RateLimitPartition.GetFixedWindowLimiter(
         context.Connection.RemoteIpAddress?.ToString() ?? "local",
         _ => new FixedWindowRateLimiterOptions { PermitLimit = 20, Window = TimeSpan.FromMinutes(1) }));
@@ -76,6 +94,9 @@ if (args.Contains("--initialize"))
     await StoreSetup.InitializeAsync(app.Services, app.Configuration, app.Environment);
     return;
 }
+
+if (app.Configuration.GetValue<bool>("Store:InitializeOnStart"))
+    await StoreSetup.InitializeAsync(app.Services, app.Configuration, app.Environment);
 
 app.UseExceptionHandler();
 if (app.Environment.IsDevelopment()) app.MapOpenApi();

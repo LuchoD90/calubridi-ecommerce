@@ -6,7 +6,7 @@ const view = document.querySelector('#view');
 const search = document.querySelector('#search');
 const filters = document.querySelector('#filters');
 const products = document.querySelector('#products');
-const homeRoutes = new Set(['', 'inicio', 'atelier', 'catalogo']);
+const homeRoutes = new Set(['', 'inicio', 'atelier', 'catalogo', 'arreglos', 'consulta']);
 let catalog = { currency: 'ARS', products: [] };
 let category = '';
 let favoriteIds = new Set();
@@ -32,9 +32,33 @@ updateCart(false);
 
 for (const node of document.querySelectorAll('[data-icon]')) node.insertAdjacentHTML('afterbegin', icon(node.dataset.icon));
 
+for (const link of document.querySelectorAll('[data-whatsapp]')) {
+  const message = link.dataset.whatsapp === 'repair'
+    ? 'Hola, Calubridi. Quería consultar por un arreglo de costura.'
+    : 'Hola, Calubridi. Quería hacer una consulta.';
+  const url = new URL(link.href);
+  url.searchParams.set('text', message);
+  link.href = url.href;
+}
+
+const inquiryForm = document.querySelector('#inquiry-form');
+onSubmit(inquiryForm, async fields => {
+  const success = inquiryForm.querySelector('.inquiry-success');
+  success.textContent = '';
+  const body = Object.fromEntries(fields);
+  const digits = body.phone.replace(/[^0-9]/g, '');
+  if (!/^\+?[0-9 ().-]+$/.test(body.phone.trim()) || digits.length < 8 || digits.length > 15)
+    throw new Error('Ingresá un teléfono válido con código de área.');
+  await api('/api/inquiries', { method: 'POST', body });
+  inquiryForm.reset();
+  success.textContent = 'Recibimos tu consulta. Te contactaremos al número que dejaste.';
+  success.focus();
+});
+
+
 const image = (url, name, eager = false) => media(url)
   ? `<img src="${media(url)}" alt="${esc(name)}" loading="${eager ? 'eager' : 'lazy'}">`
-  : '<span class="blank-photo">CALIBRIDI ATELIER</span>';
+  : '<span class="blank-photo">CALUBRIDI · TELA EN CASA</span>';
 
 function favoriteButton(id) {
   const active = favoriteIds.has(id);

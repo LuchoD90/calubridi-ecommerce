@@ -1,4 +1,4 @@
-# Calibridi Atelier
+# Calubridi · Tela en casa
 
 Tienda de costura por encargo sobre ASP.NET Core 10, Entity Framework Core y PostgreSQL. La misma aplicación sirve la interfaz y la API.
 
@@ -42,3 +42,9 @@ El esquema nuevo tiene una migración de EF que conserva las tablas existentes. 
 El `Dockerfile` de la raíz publica la aplicación para Linux en el puerto 8080. Pasale `ConnectionStrings__DefaultConnection` y los secretos como variables del entorno en el momento de ejecutar el contenedor. Ejecutá el contenedor una vez con `--initialize` para aplicar las migraciones y crear el administrador, y luego iniciá el servicio sin ese argumento. La imagen del contenedor excluye los datos de muestra y los archivos cargados localmente.
 
 Un servicio Free de Render puede ejecutar la imagen con PostgreSQL para pruebas temporales. Su disco es efímero, así que las cargas locales se pierden al reiniciar. Para una instalación con catálogo real, usá almacenamiento persistente para las cargas y una base con copias de seguridad.
+
+## Marca y consultas
+
+La sección **Arreglos** y el botón de WhatsApp abren el número comercial publicado por Calubridi. El formulario exige un teléfono con código de área. Los mensajes se guardan en PostgreSQL y se pueden revisar en **Panel del taller → Consultas**, donde el administrador puede llamar y marcar el mensaje como respondido. No se envían mensajes automáticos.
+
+El archivo `render.yaml` permite crear una instalación de prueba con Docker y PostgreSQL en Render. Vinculá el repositorio y la rama del PR, y cargá correo y contraseña del administrador mediante el formulario de secretos de Render. La base gratuita vence y las fotos subidas al disco del contenedor se pierden al reiniciar. Usá datos ficticios durante las pruebas.

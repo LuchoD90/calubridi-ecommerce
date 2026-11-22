@@ -31,6 +31,7 @@ public class ApplicationDbContext : IdentityDbContext<StoreUser>
 
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<Favorite> Favorites => Set<Favorite>();
+    public DbSet<Inquiry> Inquiries => Set<Inquiry>();
     public DbSet<SupplierPurchase> SupplierPurchases => Set<SupplierPurchase>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,6 +47,7 @@ public class ApplicationDbContext : IdentityDbContext<StoreUser>
         modelBuilder.Entity<Order>().HasIndex(o => new { o.UserId, o.CheckoutKey }).IsUnique();
         modelBuilder.Entity<Order>().Property(o => o.Revision).IsConcurrencyToken();
         modelBuilder.Entity<Order>().HasIndex(o => o.CreatedAt);
+        modelBuilder.Entity<Inquiry>().HasIndex(i => i.CreatedAt);
         modelBuilder.Entity<SupplierPurchase>().HasIndex(p => p.Date);
 
         // =========================================================

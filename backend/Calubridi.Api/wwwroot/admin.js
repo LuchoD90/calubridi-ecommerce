@@ -1,4 +1,4 @@
-import { api, esc, errorField, money, onSubmit, options, receipt, statuses, toast } from './ui.js';
+import { api, date, esc, errorField, money, onSubmit, options, receipt, statuses, toast } from './ui.js';
 
 const base = '/api/products';
 const transitions = {
@@ -7,7 +7,7 @@ const transitions = {
 };
 const button = text => `<button class="button" type="submit">${text}</button>`;
 const adminNav = `<p class="eyebrow">GESTIÓN DEL ATELIER</p><h2>Panel del taller</h2>
-  <nav class="pills" aria-label="Administración"><a class="pill" href="#admin">Ventas y compras</a><a class="pill" href="#admin/catalogo">Catálogo</a><a class="pill" href="#cuenta">Mi cuenta</a></nav>`;
+  <nav class="pills" aria-label="Administración"><a class="pill" href="#admin">Ventas y compras</a><a class="pill" href="#admin/catalogo">Catálogo</a><a class="pill" href="#admin/consultas">Consultas</a><a class="pill" href="#cuenta">Mi cuenta</a></nav>`;
 const totalLabel = values => values.length ? values.map(v => money(v.total, v.currency)).join(' · ') : '—';
 const localDate = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date());
 
@@ -178,7 +178,35 @@ async function loadCatalog(view, context, id) {
   };
 }
 
+const inquiryTopics = { arreglos: 'Arreglos de costura', pedidos: 'Diseños por encargo', otra: 'Otra consulta' };
+
+async function loadInquiries(view, context, page = 1) {
+  const data = await api('/api/inquiries?page=' + page);
+  if (!context.active()) return;
+  view.innerHTML = `${adminNav}<section class="stack admin-section"><h3>Consultas recibidas</h3>
+    ${data.items.length ? data.items.map(item => `<article class="panel">
+      <div class="row spread"><strong>${esc(item.name)}</strong><span class="tag">${item.answeredAt ? 'Respondida' : 'Pendiente'}</span></div>
+      <p class="muted">${date(item.createdAt)} · ${esc(inquiryTopics[item.topic])}</p>
+      <p class="inquiry-message">${esc(item.message)}</p>
+      <div class="row"><a class="button secondary" href="tel:${esc(item.phone.replace(/[^0-9+]/g, ''))}">Llamar al ${esc(item.phone)}</a>
+      ${item.answeredAt ? '' : `<button class="button" data-answer="${esc(item.id)}">Marcar respondida</button>`}</div>
+      </article>`).join('') : '<p class="empty">Todavía no hay consultas en esta página.</p>'}
+    <div class="row">${page > 1 ? '<button class="button secondary" data-inquiry-page="-1">Anterior</button>' : ''}
+    ${data.hasMore ? '<button class="button secondary" data-inquiry-page="1">Siguiente</button>' : ''}</div></section>`;
+  for (const b of view.querySelectorAll('[data-answer]')) b.onclick = async () => {
+    b.disabled = true;
+    try {
+      await api('/api/inquiries/' + b.dataset.answer + '/answered', { method: 'PATCH' });
+      await loadInquiries(view, context, page);
+    } catch (error) { toast(error.message); }
+    finally { b.disabled = false; }
+  };
+  for (const b of view.querySelectorAll('[data-inquiry-page]'))
+    b.onclick = () => loadInquiries(view, context, page + Number(b.dataset.inquiryPage)).catch(error => toast(error.message));
+}
+
 export async function renderAdmin(view, route, context) {
-  if (route.startsWith('admin/catalogo')) await loadCatalog(view, context, Number(route.split('/')[2]) || null);
+  if (route === 'admin/consultas') await loadInquiries(view, context);
+  else if (route.startsWith('admin/catalogo')) await loadCatalog(view, context, Number(route.split('/')[2]) || null);
   else await loadDashboard(view, context);
 }
